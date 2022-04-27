@@ -1,25 +1,29 @@
 // jsx = componente de react
 
-import React, {useState, useRef, useEffect} from 'react' // estados state hooks
+import React, { useState, useRef, useEffect } from 'react' // estados state hooks
 import { TodoList } from './components/TodoList'
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 // import logo from './logo.svg'
-// import './App.css'
+import './App.css'
 
 const KEY = 'todoApp.todos'
 
 export function App() {
-  const [todos, setTodos] = useState([{
-    id: 1,
-    task: 'tarea 1',
-    comp: false
-  }]) // comp = completed
+  const [todos, setTodos] = useState([
+    {
+      id: 1,
+      task: 'tarea 1',
+      desc: 'descripcion',
+      comp: false
+    }
+  ]) // comp = completed
 
   const todoTaskRef = useRef()
+  const todoDescRef = useRef()
 
   // useEffect(() => {}, []) // hooks
 
-// get
+  // get
   useEffect(() => {
     const storeTodos = JSON.parse(localStorage.getItem(KEY))
     if (storeTodos) {
@@ -27,7 +31,7 @@ export function App() {
     }
   }, [])
 
-// add ó set
+  // add ó set
   useEffect(() => {
     localStorage.setItem(KEY, JSON.stringify(todos)) // mantiene datos en memoria mientras navegador está abierto
   }, [todos])
@@ -39,17 +43,19 @@ export function App() {
     setTodos(newTodos) // reenviamos
   }
 
+  // add
   const handleTodoAdd = () => {
-
     const task = todoTaskRef.current.value
+    const desc = todoDescRef.current.value
 
-    if (task === '') return
+    if (task === '') return // sino ingresa algo, volver
 
     setTodos((prevTodos) => {
-      return [...prevTodos, {id: uuidv4(), task, comp: false}]
+      return [...prevTodos, { id: uuidv4(), task, desc, comp: false }]
     })
 
     todoTaskRef.current.value = null // limpia input
+    todoDescRef.current.value = null // limpia input
   }
 
   const handleClearAll = () => {
@@ -63,16 +69,21 @@ export function App() {
         <img src={logo} className="App-logo" alt="logo" />
       </header> */}
 
-      <TodoList
-        todos={todos} toggleTodo={toggleTodo}
-      />
+      <input className="tarea space" ref={todoTaskRef} type="text" placeholder="Tarea" />
+      <br />
+      <textarea className="tarea space" ref={todoDescRef} name="description" placeholder="descripción"></textarea>
+      <br />
+      <button className='add space' onClick={handleTodoAdd}>Agregar</button>
 
-      <input ref={todoTaskRef} type="text" placeholder='new task' />
+      <div className="space">
+        Quedan {todos.filter((todo) => !todo.comp).length} tareas
+      </div>
 
-      <button onClick={handleTodoAdd}>➕</button>
-      <button onClick={handleClearAll}>🗑</button>
-      <div>te quedan {todos.filter((todo) => !todo.comp).length} tareas</div>
+      <button className="space del" onClick={handleClearAll}>
+        Eliminar seleccionado
+      </button>
 
+      <TodoList todos={todos} toggleTodo={toggleTodo} />
     </div>
   )
 }

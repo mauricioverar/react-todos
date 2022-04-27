@@ -1,5 +1,24 @@
-.App {
-  text-align: center;
+.space {
+  margin: 8px;
+}
+
+.add {
+  background: #007bff;
+  color: white;
+}
+
+.del {
+  background: #ffc107;
+}
+
+.task {
+  text-transform: uppercase;
+}
+
+.tarea {
+  background: #ecdac0;
+  font-size: larger;
+  font-weight: bold;
 }
 
 .App-logo {

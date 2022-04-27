@@ -1,7 +1,8 @@
 import React from 'react'
+import '../App.css'
 
 export function TodoItem({ todo, toggleTodo }) {
-  const { id, task, comp } = todo // destructuring
+  const { id, task, desc, comp } = todo // destructuring
 
   const handleTodoClick = () => {
       toggleTodo(id)
@@ -10,7 +11,7 @@ export function TodoItem({ todo, toggleTodo }) {
   return (
     <li>
       <input type="checkbox" checked={comp} onChange={handleTodoClick} />
-      {task}
+      <span className="task">{task} -  </span><span>{desc}</span>
     </li>
   )
 }
